@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var viewTree: String = "Show ViewTree"
+    @State var viewTree: String = "ViewTree"
     
     @State var counter = 0
 
@@ -18,7 +18,25 @@ struct ContentView: View {
     
     var body: some View {
 
-        let text = Text("example text").frame(maxWidth: 400)
+        // Text
+//        let v = Text("example text").frame(maxWidth: 300)
+        
+        // stack
+        let v = VStack(spacing: 10) {
+            Text("Tap me!")
+                .padding()
+                .background(Color(.tertiaryLabelColor))
+                .cornerRadius(5)
+                .onTapGesture {
+                    self.counter += 1
+            }
+            
+            if self.counter > 0 {
+                Text("You've tapped \(counter) times")
+            } else {
+                Text("You've not yet tapped")
+            }
+        }
         
         return VStack(spacing: 0) {
             Text("Show View Tree")
@@ -26,7 +44,8 @@ struct ContentView: View {
                 .frame(maxHeight: 50)
                 .padding([.top,.bottom], 20)
                 .onTapGesture {
-                    let subjectInfo = text.subjectTypeInfo()
+                    let subjectInfo = v.subjectTypeInfo()
+                    print("subjectInfo: \(subjectInfo)")
                     self.viewTree = subjectInfo
                     self.nsImage = self.graphImage(subjectInfo)
             }
@@ -34,11 +53,13 @@ struct ContentView: View {
             Divider()
             
             HStack(spacing: 0) {
-                text.layoutPriority(1)
+                v
                 Divider()
                 Text(self.viewTree)
-                    .frame(maxWidth: 400)
+                    .font(.title)
                     .padding(8)
+                    .layoutPriority(1)
+                    .frame(minWidth: 350)
                 Divider()
                 VStack {
                     Group {
@@ -49,6 +70,7 @@ struct ContentView: View {
                         }
                     }
                 }
+                .layoutPriority(2)
                 .frame(minWidth: 325)
                 Spacer().frame(width: 20)
             }
@@ -61,7 +83,21 @@ struct ContentView: View {
 extension ContentView {
     func handleInput(_ inputText: String) -> [String] {
         var input = inputText
+        
+        let index = input.firstIndex { e -> Bool in
+            return e == "("
+        }
+        
+        if let index = index {
+            input.insert(contentsOf: "Tuple", at: index)
+        }
+        
+        
         input = input
+            // 针对元组情况
+            .replacingOccurrences(of: "(", with: "<")
+            .replacingOccurrences(of: ")", with: ">")
+            // 替换为（）
             .replacingOccurrences(of: "<", with: "(")
             .replacingOccurrences(of: ">", with: ")")
             .replacingOccurrences(of: ",", with: ")(")
