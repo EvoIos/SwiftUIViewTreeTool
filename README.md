@@ -12,3 +12,11 @@ VStack<TupleView<(ModifiedContent<ModifiedContent<ModifiedContent<ModifiedConten
 
 
 ![stack view tree](https://github.com/EvoIos/SwiftUIViewTreeTool/blob/master/snapshots/SwiftUIStackTree.png)
+
+## 安装
+
+依赖 GraphViz
+
+```
+brew install graphviz
+```
