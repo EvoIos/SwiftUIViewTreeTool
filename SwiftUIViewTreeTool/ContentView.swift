@@ -53,13 +53,21 @@ struct ContentView: View {
             Divider()
             
             HStack(spacing: 0) {
-                v
-                Divider()
-                Text(self.viewTree)
+                
+                VStack {
+                    v
+                    
+                    Spacer().frame(height: 40)
+                    Divider()
+                    
+                    Text(self.viewTree)
                     .font(.title)
                     .padding(8)
                     .layoutPriority(1)
-                    .frame(minWidth: 350)
+                    .frame(maxHeight: 400)
+                }
+                .frame(minWidth: 350)
+                    
                 Divider()
                 VStack {
                     Group {
